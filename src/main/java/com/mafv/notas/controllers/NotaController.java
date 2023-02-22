@@ -1,10 +1,16 @@
 
 package com.mafv.notas.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,17 +41,13 @@ public class NotaController {
     }
 
     @GetMapping(value="/notas/buscar")
-    public List<Nota> findByTitulo(@RequestParam("titulo") String titulo) {
-        List<Nota> notas = notaService.findAll();
-        List<Nota> notasEncontradas = new ArrayList<Nota>();
+    public List<Nota> findByCriteria(@RequestParam String titulo, 
+            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date fecha) {
+        
+        List<Nota> notas = notaService.findCriteria(titulo, fecha);
+        
 
-        for (Nota nota : notas){
-            if (nota.getTitulo().contains(titulo)){
-                notasEncontradas.add(nota);
-            }
-        }
-
-        return notasEncontradas;
+        return notas;
     }
 
     @DeleteMapping("/notas/{id}")

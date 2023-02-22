@@ -1,5 +1,6 @@
 package com.mafv.notas.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.mafv.notas.models.Nota;
@@ -11,4 +12,6 @@ public interface NotaService {
     public void update(int id, Nota nota);
     public void deleteById(int id);
     public void deleteAll();
+    public List<Nota> findCriteria(String titulo, Date fecha);
+    
 }

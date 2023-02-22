@@ -1,5 +1,6 @@
 package com.mafv.notas.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +53,13 @@ public class NotaServiceImpl implements NotaService{
     @Override
     public void deleteAll() {
         notaRepository.deleteAll();
+    }
+
+    @Override
+    public List<Nota> findCriteria(String titulo, Date fecha) {
+        List<Nota> notasCriteria = notaRepository.findByTituloContainingAndFechaGreaterThan(titulo, fecha);
+
+        return notasCriteria;
     }
     
 }
