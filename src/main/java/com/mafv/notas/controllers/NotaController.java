@@ -34,13 +34,13 @@ public class NotaController {
         return notaService.findById(id);
     }
 
-    @GetMapping(value="/notas/buscar/{texto}")
-    public List<Nota> findByTitulo(@PathVariable String texto) {
+    @GetMapping(value="/notas/buscar")
+    public List<Nota> findByTitulo(@RequestParam("titulo") String titulo) {
         List<Nota> notas = notaService.findAll();
         List<Nota> notasEncontradas = new ArrayList<Nota>();
 
         for (Nota nota : notas){
-            if (nota.getTitulo().contains(texto)){
+            if (nota.getTitulo().contains(titulo)){
                 notasEncontradas.add(nota);
             }
         }
