@@ -45,7 +45,6 @@ public class NotaController {
             @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") Date fecha) {
         
         List<Nota> notas = notaService.findCriteria(titulo, fecha);
-        
 
         return notas;
     }
