@@ -20,7 +20,7 @@ public class Nota {
     private String titulo;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-mm-dd", shape = JsonFormat.Shape.STRING, timezone = JsonFormat.DEFAULT_TIMEZONE,  locale="es_ES")
     private Date fecha;
 
     @Column(length = 1000, nullable = false)
