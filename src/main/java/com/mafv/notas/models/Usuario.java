@@ -1,6 +1,5 @@
 package com.mafv.notas.models;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,13 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.JoinColumn;
 
 @Entity
-public class Usuario implements UserDetails{
+public class Usuario{
 
     @Id
     @GeneratedValue
@@ -104,38 +100,6 @@ public class Usuario implements UserDetails{
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
-    }
-
-    @Override
-    public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-    
+ 
     
 }

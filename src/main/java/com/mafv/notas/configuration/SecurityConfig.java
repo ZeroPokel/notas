@@ -21,48 +21,43 @@ public class SecurityConfig{
     JWTAuthorizationFilter authorizationFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager autManager) throws Exception{
-        
-        JWTAuthenticacionFilter authenticacionFilter = new JWTAuthenticacionFilter();
-        authenticacionFilter.setAuthenticationManager(autManager);
-        authenticacionFilter.setFilterProcessesUrl("/login");
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
+        JWTAuthenticationFilter authenticationFilter = new JWTAuthenticationFilter();
+        authenticationFilter.setAuthenticationManager(authManager);
+        authenticationFilter.setFilterProcessesUrl("/login");
 
         http
-            .csrf().disable()
-            .authorizeRequests()
-            .anyRequest()
-            .authenticated()
-        .and()
-            .httpBasic()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .addFilter(authenticacionFilter)
-            .addFilterBefore(authenticacionFilter, UsernamePasswordAuthenticationFilter.class)
-            ;
-        
+                .csrf().disable()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilter(authenticationFilter)
+                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        //return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
-    UsuariosService myUserService(){
+    UsuariosService myUserService() {
         return new UsuariosService();
     }
 
     @Bean
     AuthenticationManager authManager(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(myUserService())
-            .passwordEncoder(passwordEncoder())
-            .and()
-            .build();
+                .userDetailsService(myUserService())
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
     }
 
 

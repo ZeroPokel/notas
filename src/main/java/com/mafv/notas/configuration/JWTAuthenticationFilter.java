@@ -17,25 +17,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mafv.notas.models.Credentials;
 
-public class JWTAuthenticacionFilter extends UsernamePasswordAuthenticationFilter{
-
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
+    
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-        throws AuthenticationException {
+            throws AuthenticationException {
+        Credentials credentials = new Credentials();
 
-            Credentials credentials = new Credentials();
+        try {
+            credentials = new ObjectMapper().readValue(request.getReader(), Credentials.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            try {
-                credentials = new ObjectMapper().readValue(request.getReader(), Credentials.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 credentials.getUsername(),
                 credentials.getPassword(),
-                Collections.emptyList());  
-        
+                Collections.emptyList());
+
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 
@@ -43,12 +42,13 @@ public class JWTAuthenticacionFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
 
-                UserDetails userDetails = (UserDetails) authResult.getPrincipal();
-                String token = TokenUtils.createToken(userDetails.getUsername(), userDetails.getUsername());
-                
-                response.addHeader("Authorization", "Bearer " + token);
+        UserDetails userDetails = (UserDetails) authResult.getPrincipal();
 
-                response.getWriter().flush();
+        String token = TokenUtils.createToken(userDetails.getUsername(), userDetails.getUsername());
+
+        response.addHeader("Authorization", "Bearer " + token);
+
+        response.getWriter().flush();
 
         super.successfulAuthentication(request, response, chain, authResult);
     }
