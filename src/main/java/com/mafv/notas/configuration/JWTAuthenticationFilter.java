@@ -52,6 +52,5 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         super.successfulAuthentication(request, response, chain, authResult);
     }
-    
 
 }
